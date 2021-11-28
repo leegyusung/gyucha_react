@@ -34,18 +34,17 @@ const StyledButton = styled.button`
     `}
 
 `
-
 const textMap = {
     login: '로그인',
     register: '회원가입'
 };
-const AuthForm = ({ type, form, onChange }) => {
+const AuthForm = ({ type, form, onChange, onSubmit }) => {
     const text = textMap[type];
 
     return (
         <AuthFormBlock>
             <h2>{text}</h2>
-            <form>
+            <form onSubmit={onSubmit}>
                 {type === 'register' ?
                     <>
                         <StyledInput type="text" name="username" placeholder="아이디" value={form.register.username} onChange={onChange}></StyledInput>
@@ -68,7 +67,7 @@ const AuthForm = ({ type, form, onChange }) => {
     );
 };
 
-const Modals = ({ visible, type, form, closeModal, onChange }) => {
+const Modals = ({ visible, type, form, closeModal, onChange, onSubmit }) => {
 
     return (
         <Modal
@@ -78,7 +77,7 @@ const Modals = ({ visible, type, form, closeModal, onChange }) => {
             effect="fadeInDown"
             onClickAway={closeModal}
         >
-            <AuthForm form={form} type={type} onChange={onChange}></AuthForm>
+            <AuthForm form={form} type={type} onChange={onChange} onSubmit={onSubmit}></AuthForm>
         </Modal>
     );
 };

@@ -1,9 +1,9 @@
-import HeaderForm from "../components/HeaderForm";
+import HeaderFormContainer from "../containers/HeaderFormContainer";
 
 const MainPage = () => {
     return (
         <div>
-            <HeaderForm></HeaderForm>
+            <HeaderFormContainer></HeaderFormContainer>
         </div>
     );
 };

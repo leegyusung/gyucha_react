@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import { FcStart } from 'react-icons/fc'
 import { FcSearch } from 'react-icons/fc'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalsContainer from '../containers/ModalsContainer';
+
+
 
 const HeaderFormBlock = styled.header`
     display: flex;
@@ -96,7 +98,7 @@ const HeaderFormBlock = styled.header`
 `
 
 
-const HeaderForm = () => {
+const HeaderForm = ({ onLogout, user }) => {
     const [toggle, setToggle] = useState(false);
     const [visible, setVisible] = useState(false);
     const [type, setType] = useState("");
@@ -114,7 +116,6 @@ const HeaderForm = () => {
         setVisible(false)
     }
 
-
     return (
         <>
             <HeaderFormBlock toggle={toggle}>
@@ -127,8 +128,19 @@ const HeaderForm = () => {
                 </div>
 
                 <ul className="header_button">
-                    <li onClick={() => openModal('login')}>로그인</li>
-                    <li onClick={() => openModal('register')}>회원가입</li>
+                    {!user &&
+                        <>
+                            <li onClick={() => openModal('login')}>로그인</li>
+                            <li onClick={() => openModal('register')}>회원가입</li>
+                        </>
+                    }
+                    {user &&
+                        <>
+                            <li>{user.username} 님</li>
+                            <li onClick={onLogout}>로그아웃</li>
+                        </>
+                    }
+
                 </ul>
                 <a className='nav_toggle_btn' href="#" onClick={onToggle}><GiHamburgerMenu /></a>
             </HeaderFormBlock>

@@ -1,12 +1,18 @@
 import Modals from "../common/Modals";
-import { change_field, init_form } from "../modules/auth";
+import { change_field, init_form, register, login } from "../modules/auth";
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { withRouter } from "react-router";
 
-const ModalsContainer = ({ visible, type, closeModal }) => {
+
+
+const ModalsContainer = ({ visible, type, closeModal, history }) => {
     const dispatch = useDispatch();
-    const { form } = useSelector(({ auth }) => ({
-        form: auth
+
+    const { form, auth, authError } = useSelector(({ auth }) => ({
+        form: auth,
+        auth: auth.auth,
+        authError: auth.authError
     }))
 
     const onChange = e => {
@@ -18,9 +24,41 @@ const ModalsContainer = ({ visible, type, closeModal }) => {
         }))
     }
 
+    const onSubmit = e => {
+        const { username, password, passwordConfirm } = form.register;
+        e.preventDefault();
+
+        if (passwordConfirm) {
+            if ([username, password, passwordConfirm].includes("")) return;
+            if (password !== passwordConfirm) return;
+            dispatch(register({
+                username,
+                password
+            }))
+        }
+        else {
+            const { username, password } = form.login;
+            if ([username, password].includes("")) return;
+            dispatch(login({
+                username,
+                password
+            }))
+        }
+    }
+
     useEffect(() => {
         dispatch(init_form());
     }, [dispatch, visible])
+
+    useEffect(() => {
+        if (auth) {
+            history.go('/');
+        }
+        if (authError) {
+            console.log(authError);
+        }
+    }, [auth, authError, history])
+
     return (
         <>
             <Modals
@@ -29,9 +67,10 @@ const ModalsContainer = ({ visible, type, closeModal }) => {
                 type={type}
                 closeModal={closeModal}
                 onChange={onChange}
+                onSubmit={onSubmit}
             ></Modals>
         </>
     );
 };
 
-export default ModalsContainer;
+export default withRouter(ModalsContainer);
