@@ -32,14 +32,38 @@ const StyledButton = styled.button`
     ${props => props.kakao && css`
         background-color: #FFFF00;
     `}
-
 `
+const StyledLink = styled.a`
+    img{
+        width: 100%;
+        height: 40px;
+    }
+`
+
 const textMap = {
     login: '로그인',
     register: '회원가입'
 };
+
+const Modals = ({ visible, type, form, closeModal, onChange, onSubmit }) => {
+
+    return (
+        <Modal
+            visible={visible}
+            width="400"
+            height="320"
+            effect="fadeInDown"
+            onClickAway={closeModal}
+        >
+            <AuthForm form={form} type={type} onChange={onChange} onSubmit={onSubmit} ></AuthForm>
+        </Modal>
+    );
+};
+
 const AuthForm = ({ type, form, onChange, onSubmit }) => {
     const text = textMap[type];
+
+
 
     return (
         <AuthFormBlock>
@@ -56,30 +80,23 @@ const AuthForm = ({ type, form, onChange, onSubmit }) => {
                     </>}
                 {type === 'register' ? <>
                     <StyledButton cyan>회원가입</StyledButton>
-                    <StyledButton kakao>카카오톡 회원가입</StyledButton>
                 </> :
                     <>
                         <StyledButton cyan>로그인</StyledButton>
-                        <StyledButton kakao>카카오톡 로그인</StyledButton>
+
                     </>}
             </form>
+            {type === 'login' ?
+                <>
+                    <StyledLink href="http://localhost:4000/api/auth/kakao"><img alt="kakao" src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"></img></StyledLink>
+                </> :
+                <></>
+            }
+
         </AuthFormBlock>
     );
 };
 
-const Modals = ({ visible, type, form, closeModal, onChange, onSubmit }) => {
 
-    return (
-        <Modal
-            visible={visible}
-            width="400"
-            height="380"
-            effect="fadeInDown"
-            onClickAway={closeModal}
-        >
-            <AuthForm form={form} type={type} onChange={onChange} onSubmit={onSubmit}></AuthForm>
-        </Modal>
-    );
-};
 
 export default Modals;

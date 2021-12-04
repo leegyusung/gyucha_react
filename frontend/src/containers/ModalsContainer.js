@@ -1,7 +1,7 @@
 import Modals from "../common/Modals";
 import { change_field, init_form, register, login } from "../modules/auth";
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { withRouter } from "react-router";
 
 

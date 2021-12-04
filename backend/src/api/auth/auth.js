@@ -1,6 +1,6 @@
 import { generateAccessToken } from '../../lib/jwtmiddle';
 import User from '../../models/user';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 
 export const register = async (req, res) => {
     const { username, password } = req.body;
@@ -13,7 +13,8 @@ export const register = async (req, res) => {
         const hash = await bcrypt.hash(password, 10)
         const user = new User({
             username: username,
-            password: hash
+            password: hash,
+            provider: 'local'
         })
         await user.save();
         return res.json(user);
@@ -64,4 +65,10 @@ export const getUsers = async (req, res) => {
         return res.json(error);
     }
 
+}
+
+export const kakao = async (req, res) => {
+    console.log(req.user);
+    res.cookie('user', req.user);
+    return res.redirect('http://localhost:3000/');
 }

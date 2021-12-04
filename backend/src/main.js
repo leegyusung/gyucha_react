@@ -4,9 +4,12 @@ import morgan from 'morgan';
 import api from '../src/api/index'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser';
+import passportConfig from './lib/passport/index';
+import passport from 'passport';
+import session from 'express-session';
 
 const app = express();
-
+passportConfig();
 const { PORT, MONGO_URI } = process.env;
 mongoose.connect(MONGO_URI)
     .then(() => {
@@ -15,6 +18,13 @@ mongoose.connect(MONGO_URI)
     .catch((err) => {
         console.log(err)
     })
+
+app.use(session({
+    secret: 'secret',
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(morgan('dev'));
 app.use(express.json());
